@@ -1,0 +1,5 @@
+print("Welcome to the taxes and tip calculator!")
+price = float(input("What is the price before tax? "))
+tax = float(input("What are the taxes? (in %) "))
+tip = float(input("What do you want to tip? (in %) "))
+print("the price you need to pay is " + str(((price*tax/100) + ((price*tax/100 + price)*tip/100) + price)) + ".")
