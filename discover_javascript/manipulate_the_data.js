@@ -1,4 +1,5 @@
 var https = require('https');
+var fs = require('fs');
 
 var options = {
 	hostname: 'api.github.com',
@@ -23,8 +24,10 @@ function streamToString(stream, cb) {
 
 function cb(j_string) {
 	var jsonString = j_string;
-	console.log(typeof jsonString);
-	console.log(jsonString);
+	var json_data = JSON.parse(jsonString);
+	for (var item in json_data['items']) {
+		console.log(json_data['items'][item]['full_name']);
+	}
 };
 
 var req = https.request(options, function(res) {
