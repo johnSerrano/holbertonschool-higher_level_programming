@@ -15,12 +15,13 @@ class Square():
 	def area(self):
 		return self.__side_length ** 2
 
-	def print_sq(self):
-		print("".join(["*" for _ in range(0, self.__side_length)]))
+	def __call__(self):
+		strn = ""
+		strn += "".join(["*" for _ in range(0, self.__side_length)]) + "\n"
 		for _ in range(2, self.__side_length):
-			print("*" + "".join([" " for _ in range(2, self.__side_length)]) + "*")
-		print("".join(["*" for _ in range(0, self.__side_length)]))
-
+			strn += ("*" + "".join([" " for _ in range(2, self.__side_length)]) + "*\n")
+		strn += ("".join(["*" for _ in range(0, self.__side_length)]))
+		return strn
 
 if __name__ == "__main__":
 	s = Square(4)
@@ -28,4 +29,4 @@ if __name__ == "__main__":
 	s.set_color("Yellow")
 	s.name = "Hally"
 	print("Area of %s is %d" % (s.name, s.area()))
-	s.print_sq()
+	print s()
