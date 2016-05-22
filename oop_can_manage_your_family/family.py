@@ -123,8 +123,7 @@ class Person():
 		return age_
 
 	def can_have_child(self):
-		# return isinstance(self, Adult)
-		return True
+		return isinstance(self, Adult)
 
 	def has_child_with(self, p, id, first_name, date_of_birth, genre, eyes_color=None, married_to=0, last_name=None):
 		if not all(person.can_have_child() for person in [self, p]):
@@ -332,7 +331,7 @@ if __name__ == "__main__":
 	alex = aaron.has_child_with(anne, 6, "Alexander", [1, 1, 1999], "Male", None, 0, "Andrews")
 
 	# should fail (can't have baby exception) change for debug purposes
-	amelie = alex.has_child_with(hillary, 7, "Amelie", [1, 1, 1999], "Male", None, 0, "Andrews")
+	# amelie = alex.has_child_with(hillary, 7, "Amelie", [1, 1, 1999], "Male", None, 0, "Andrews")
 
 	family.append(hillary)
 	family.append(alex)
@@ -348,5 +347,5 @@ if __name__ == "__main__":
 	hillary = family[4]
 	alex = family[5]
 
-	print amelie.who_are_my_grand_parents(family)
-	print bill.who_are_my_grandchildren(family)
+	# print amelie.who_are_my_grand_parents(family)
+	# print bill.who_are_my_grandchildren(family)
