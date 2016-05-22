@@ -149,6 +149,9 @@ class Person():
 			raise Exception("Can't adopt child")
 		self.children.append(c.__id)
 
+	def who_are_my_grandchildren(self, list_person):
+		raise NotImplementedError("Please Implement this method")
+
 	def who_are_my_grand_parents(self, list_person):
 		raise NotImplementedError("Please Implement this method")
 
@@ -298,9 +301,6 @@ class Senior(Person):
 	def who_are_my_grandchildren(self, list_person):
 		if not list_person or not isinstance(list_person, list) or not all(isinstance(person, Person) for person in list_person):
 			raise Exception("list_person is not valid")
-
-		#[grandchild for grandchild in list_person if person.get_id() in child.children]
-
 		return [grandchild for grandchild in list_person if grandchild.get_id() in [person for sublist in [child.children for child in [person for person in list_person if person.get_id() in self.children]] for person in sublist]]
 
 
