@@ -55,6 +55,50 @@ class Student: Person, Classify {
     return true
   }
 }
+
+class School {
+  var name: String
+  var list_persons: [Person]
+
+  init (name: String) {
+    self.name = name
+    self.list_persons = []
+  }
+
+  func addStudent(p: Person) -> Bool {
+    if p is Student {
+      list_persons.append(p)
+      return true
+    }
+    return false
+  }
+
+  func addMentor(p: Person) -> Bool {
+    if p is Mentor {
+      list_persons.append(p)
+      return true
+    }
+    return false
+  }
+}
+
+// var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
+// var m = Mentor(first_name: "Alex", last_name: "Rap", age: 34, subject: Subject.French)
+//
+// var school = School(name: "Holberton")
+// if(school.addStudent(s)) {
+//     print("\(s.fullName()) is now student in the school!")
+// }
+// if(school.addMentor(s)) {
+//     print("\(s.fullName()) is now mentor in the school!")
+// }
+// if(school.addStudent(m)) {
+//     print("\(m.fullName()) is now student in the school!")
+// }
+// if(school.addMentor(m)) {
+//     print("\(m.fullName()) is now mentor in the school!")
+// }
+
 //
 // var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
 // var t = Mentor(first_name: "Alex", last_name: "Rap", age: 34)
@@ -68,18 +112,18 @@ class Student: Person, Classify {
 //     print("\(t.fullName()) is student")
 // }
 
-var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
-var m = Mentor(first_name: "Alex", last_name: "Rap", age: 34, subject: Subject.French)
-
-if s.isStudent()
-{
-    print("\(s.fullName()) is student")
-}
-if m.isStudent()
-{
-    print("\(m.fullName()) is student")
-}
-else
-{
-    print("\(m.fullName()) is mentor of \(m.stringSubject())")
-}
+// var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
+// var m = Mentor(first_name: "Alex", last_name: "Rap", age: 34, subject: Subject.French)
+//
+// if s.isStudent()
+// {
+//     print("\(s.fullName()) is student")
+// }
+// if m.isStudent()
+// {
+//     print("\(m.fullName()) is student")
+// }
+// else
+// {
+//     print("\(m.fullName()) is mentor of \(m.stringSubject())")
+// }
