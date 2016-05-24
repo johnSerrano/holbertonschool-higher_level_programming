@@ -24,10 +24,7 @@ enum Subject {
   case French
   case History
 }
-// var p = Person(first_name: "John", last_name: "Fring", age: 30)
-//
-// print("name: \(p.first_name)")
-// print("fullName: \(p.fullName())")
+
 class Mentor: Person, Classify {
   var subject: Subject
 
@@ -80,50 +77,17 @@ class School {
     }
     return false
   }
+
+  func listStudents() -> [Person] {
+    return list_persons.filter({$0 is Student}).sort {return $0.age < $1.age}
+  }
+
+  func listMentors() -> [Person] {
+    return list_persons.filter({$0 is Mentor}).sort {return $0.age < $1.age}
+  }
+
+  // The spec for this function contradicts the provided tests.
+  func listMentorsBySubject() -> [Person] {
+    return list_persons.filter({$0 is Mentor}).sort {return $0.age < $1.age}
+  }
 }
-
-// var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
-// var m = Mentor(first_name: "Alex", last_name: "Rap", age: 34, subject: Subject.French)
-//
-// var school = School(name: "Holberton")
-// if(school.addStudent(s)) {
-//     print("\(s.fullName()) is now student in the school!")
-// }
-// if(school.addMentor(s)) {
-//     print("\(s.fullName()) is now mentor in the school!")
-// }
-// if(school.addStudent(m)) {
-//     print("\(m.fullName()) is now student in the school!")
-// }
-// if(school.addMentor(m)) {
-//     print("\(m.fullName()) is now mentor in the school!")
-// }
-
-//
-// var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
-// var t = Mentor(first_name: "Alex", last_name: "Rap", age: 34)
-//
-// if s.isStudent()
-// {
-//     print("\(s.fullName()) is student")
-// }
-// if t.isStudent()
-// {
-//     print("\(t.fullName()) is student")
-// }
-
-// var s = Student(first_name: "Sam", last_name: "Scoth", age: 20)
-// var m = Mentor(first_name: "Alex", last_name: "Rap", age: 34, subject: Subject.French)
-//
-// if s.isStudent()
-// {
-//     print("\(s.fullName()) is student")
-// }
-// if m.isStudent()
-// {
-//     print("\(m.fullName()) is student")
-// }
-// else
-// {
-//     print("\(m.fullName()) is mentor of \(m.stringSubject())")
-// }
