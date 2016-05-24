@@ -31,7 +31,7 @@ enum Subject {
 class Mentor: Person, Classify {
   var subject: Subject
 
-  init(first_name: String, last_name: String, age: Int, subject: Subject = Subject.Math) {
+  init(first_name: String, last_name: String, age: Int, _ subject: Subject = Subject.Math) {
     self.subject = subject
     super.init(first_name: first_name, last_name: last_name, age: age)
   }
@@ -51,9 +51,31 @@ class Mentor: Person, Classify {
 }
 
 class Student: Person, Classify {
+  var list_exercises: [Exercise]
+
+  init(first_name: String, last_name: String, age: Int, _ list_exercises: [Exercise] = []) {
+    self.list_exercises = []
+    super.init(first_name: first_name, last_name: last_name, age: age)
+  }  
+
   func isStudent() -> Bool {
     return true
   }
+
+  func addNewNote(subject: Subject, _ note: Int) {
+    let ex = Exercise(subject: subject, note: note)
+    self.list_exercises.append(ex)
+  }
+
+  func average(subject: Subject) -> Float {
+    let list_subject = list_exercises.filter {$0.subject == subject}
+    return list_subject.reduce(0) {$0 + Float($1.note)} / Float(list_subject.count)
+  }
+
+  func averageAll() -> Float {
+    return list_exercises.reduce(0) {$0 + Float($1.note)} / Float(list_exercises.count)
+  }
+
 }
 
 class School {
@@ -63,6 +85,14 @@ class School {
   init (name: String) {
     self.name = name
     self.list_persons = []
+  }
+
+  func average(subject: Subject) -> Float {
+    return self.listStudents().reduce(0) {$0 + ($1 as! Student).average(subject) } / Float(self.listStudents().count)
+  }
+
+  func averageAll() -> Float {
+    return self.listStudents().reduce(0) {$0 + ($1 as! Student).averageAll() } / Float(self.listStudents().count)
   }
 
   func addStudent(p: Person) -> Bool {
@@ -129,6 +159,26 @@ class School {
 
   func studentsAgeAverge() -> Int {
     return self.studentsAgeAverage()
+  }
+}
+
+class Exercise {
+  var subject: Subject
+  var note: Int
+
+  init(subject: Subject, note: Int = 0) {
+    self.subject = subject
+    self.note = note
+    setNote(note)
+  }
+
+  func setNote(note: Int) {
+    self.note = note
+    if self.note < 0 {
+      self.note = 0
+    } else if self.note > 10 {
+      self.note = 10
+    }
   }
 }
 
