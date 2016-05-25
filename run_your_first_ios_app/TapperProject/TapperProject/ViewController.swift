@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         taps_label.text = String(taps_done) + " taps"
         print("Tap!")
         if taps_done == taps_requested {
+            taps_done! = 0
             resetGame()
         }
         
@@ -61,6 +62,7 @@ class ViewController: UIViewController {
         button_play.hidden = false
         textfield_number.hidden = false
         taps_requested = 0
+        taps_done! = 0
     }
     
     func initGame() {
@@ -70,5 +72,6 @@ class ViewController: UIViewController {
         button_play.hidden = true
         textfield_number.hidden = true
         taps_label.text = "0 taps"
+        taps_done! = 0
     }
 }
