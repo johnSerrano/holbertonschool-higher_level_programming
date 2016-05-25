@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TapperProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="retrobg" translatesAutoresizingMaskIntoConstraints="NO" id="xaf-kp-oqE">
+                                <rect key="frame" x="-100" y="-100" width="800" height="800"/>
+                            </imageView>
+                            <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" image="Tapper" translatesAutoresizingMaskIntoConstraints="NO" id="Zmr-TV-nJH">
+                                <rect key="frame" x="52" y="19" width="497" height="107"/>
+                                <gestureRecognizers/>
+                            </imageView>
+                            <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="playbtn" translatesAutoresizingMaskIntoConstraints="NO" id="Del-dg-aVU">
+                                <rect key="frame" x="122" y="362" width="356" height="175"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="VX4-Tl-333" appends="YES" id="85E-wh-bgS"/>
+                                </connections>
+                            </imageView>
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="How many taps you wanted?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h63-2e-LoM">
+                                <rect key="frame" x="197" y="302" width="206" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="206" id="kj6-ro-HuM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="coin" translatesAutoresizingMaskIntoConstraints="NO" id="Tkq-9Y-tKO">
+                                <rect key="frame" x="178" y="10" width="244" height="268"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="smj-b5-AXA" appends="YES" id="fA1-ct-Isu"/>
+                                </connections>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 taps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Gz-l4-gP0">
+                                <rect key="frame" x="276" y="288" width="48" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Gz-l4-gP0" firstAttribute="top" secondItem="Tkq-9Y-tKO" secondAttribute="bottom" constant="10" id="EXp-fO-bpc"/>
+                            <constraint firstItem="Del-dg-aVU" firstAttribute="top" secondItem="h63-2e-LoM" secondAttribute="bottom" constant="30" id="Gze-Dr-oou"/>
+                            <constraint firstItem="Tkq-9Y-tKO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="10" id="IoU-Bg-kM2"/>
+                            <constraint firstItem="9Gz-l4-gP0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Oen-LU-WQj"/>
+                            <constraint firstItem="Tkq-9Y-tKO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SQL-xs-GZd"/>
+                            <constraint firstItem="Zmr-TV-nJH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VRi-ct-Kj5"/>
+                            <constraint firstItem="h63-2e-LoM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xt5-Mn-Rim"/>
+                            <constraint firstItem="Del-dg-aVU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZBf-Vx-bgA"/>
+                            <constraint firstItem="xaf-kp-oqE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bZy-YX-xrx"/>
+                            <constraint firstItem="Zmr-TV-nJH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="42" id="cZh-VW-tmk"/>
+                            <constraint firstItem="xaf-kp-oqE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dDy-rC-MqQ"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Del-dg-aVU" secondAttribute="bottom" constant="63" id="g6J-Fp-5JT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="button_coin" destination="Tkq-9Y-tKO" id="6vl-nL-pDZ"/>
+                        <outlet property="button_play" destination="Del-dg-aVU" id="21p-eh-mCM"/>
+                        <outlet property="image_tapper" destination="Zmr-TV-nJH" id="hgl-Iu-4mA"/>
+                        <outlet property="taps_label" destination="9Gz-l4-gP0" id="a32-Lm-BA6"/>
+                        <outlet property="textfield_number" destination="h63-2e-LoM" id="cAv-6K-xFz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="VX4-Tl-333">
+                    <connections>
+                        <action selector="clickPlayButton:" destination="BYZ-38-t0r" id="YcQ-pz-KjU"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="smj-b5-AXA">
+                    <connections>
+                        <action selector="clickCoinButton:" destination="BYZ-38-t0r" id="ZXh-0i-2XY"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="116" y="146"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Tapper" width="497" height="107"/>
+        <image name="coin" width="244" height="268"/>
+        <image name="playbtn" width="356" height="175"/>
+        <image name="retrobg" width="800" height="800"/>
+    </resources>
+</document>
