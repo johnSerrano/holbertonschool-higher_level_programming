@@ -9,7 +9,7 @@ class TaskModel():
 
 		self.__title = title
 		self.__callback_title = lambda x: None
-		self.tasks = []
+		self.tasks = ["hi", "hello", "hey"]
 		try:
 			with open(filename, 'r') as f:
 				self.deserialize_tasks()
@@ -21,9 +21,11 @@ class TaskModel():
 
 	def add_task(self, task):
 		self.tasks.append(task)
+		self.serialize_tasks()
 
 	def delete_task(self, index):
 		del self.tasks[index]
+		self.serialize_tasks()
 
 	def serialize_tasks(self):
 		with open(filename, 'w') as f:
