@@ -73,10 +73,10 @@ if __name__ == "__main__":
 		cars.append(Car(car))
 	brands = []
 	total_doors = 0
-	xmlstr = '<car_list>\n</car_list>\n'
+	xmlstr = '<cars>\n</cars>\n'
 	doc = xml.dom.minidom.parseString(xmlstr)
 	for i, car in enumerate(cars):
-		doc.getElementsByTagName('car_list')[0].appendChild(car.to_xml_node(doc))
+		doc.getElementsByTagName('cars')[0].appendChild(car.to_xml_node(doc))
 		total_doors += car.get_nb_doors()
 		if car.get_brand() not in brands:
 			brands.append(car.get_brand())
