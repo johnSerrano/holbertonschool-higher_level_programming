@@ -8,10 +8,23 @@ class TaskView(tk.Frame):
 
 		tk.Frame.__init__(self, master)
 
+		self.delete_button = tk.Button(master, text="Delete task")
+		self.delete_button.pack(side=tk.RIGHT)
+
+		self.add_button = tk.Button(master, text="Add task")
+		self.add_button.pack(side=tk.RIGHT)
+
+		self.entry = tk.Entry(master)
+		self.entry.pack(side=tk.RIGHT)
+
+		self.listbox = tk.Listbox(master)
+		self.listbox.pack(side=tk.RIGHT)
+
 		self.__title_var = tk.StringVar()
 		self.__title_label = tk.Label(master, textvariable=self.__title_var)
 		self.__title_label.textvariable = self.__title_var
 		self.__title_label.pack(side=tk.RIGHT)
+
 
 		self.toggle_button = tk.Button(master, text="Reverse")
 		self.toggle_button.pack(side=tk.LEFT)
