@@ -7,5 +7,4 @@ if __name__ == "__main__":
 	cars = []
 	for car in cars_json_list:
 		cars.append(Car(car))
-	for car in cars:
-		print car.to_comma()
+	print ''.join([car.to_comma() for car in cars])

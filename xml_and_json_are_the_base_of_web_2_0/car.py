@@ -49,7 +49,7 @@ class Car:
 		return self.__name + " " + self.__brand + " (" + str(self.__nb_doors) + ")"
 
 	def to_comma(self):
-		return self.__name + "," + self.__brand + "," + str(self.__nb_doors)
+		return self.__name + "," + self.__brand + "," + str(self.__nb_doors) + "\n"
 
 	def to_xml_node(self, doc, root="car"):
 		# just use the json, seriously
