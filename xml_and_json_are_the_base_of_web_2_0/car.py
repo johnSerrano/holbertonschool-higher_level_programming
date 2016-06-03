@@ -4,8 +4,13 @@ from xml.dom.minidom import Node, Document
 
 class Car:
 	def __init__(self, *args, **kwargs):
-		if len(args) > 0 and isinstance(args[0], dict):
-			init_dict = args[0]
+		if len(args) > 0:
+			if isinstance(args[0], dict):
+				init_dict = args[0]
+			elif isinstance(args[0], str):
+				values = args[0].split(',')
+				if len(values) == 3:
+					init_dict = {"name": values[0], "brand": values[1], "nb_doors": int(values[2])}
 		else:
 			init_dict = kwargs
 		if 'name' not in init_dict.keys() or not (isinstance(init_dict['name'], str) or isinstance(init_dict['name'], unicode)):
@@ -43,6 +48,8 @@ class Car:
 	def __str__(self):
 		return self.__name + " " + self.__brand + " (" + str(self.__nb_doors) + ")"
 
+	def to_comma(self):
+		return self.__name + "," + self.__brand + "," + str(self.__nb_doors)
 
 	def to_xml_node(self, doc, root="car"):
 		# just use the json, seriously
