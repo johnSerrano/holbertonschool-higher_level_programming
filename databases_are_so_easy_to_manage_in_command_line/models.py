@@ -12,13 +12,13 @@ class BaseModel(pw.Model):
 class School(BaseModel):
 	name = pw.FixedCharField(max_length=128)
 	def __str__(self):
-		return self.name + " " + str(self.id)
+		return self.name + " (" + str(self.id) + ")"
 
 class Batch(BaseModel):
 	school = pw.ForeignKeyField(School, related_name="batches", on_delete="cascade")
 	name = pw.FixedCharField(max_length=128)
 	def __str__(self):
-		return self.name + " " + str(self.id)
+		return self.name + " (" + str(self.id) + ")"
 
 class User(BaseModel):
 	first_name = pw.FixedCharField(max_length=128, default="")
@@ -30,7 +30,7 @@ class User(BaseModel):
 class Student(User):
 	batch = pw.ForeignKeyField(Batch, related_name="students", on_delete="cascade")
 	def __str__(self):
-		return "" + self.first_name + " " + self.last_name + " " + str(self.id) + " " + "part of batch: " + str(self.batch)
+		return "" + self.first_name + " " + self.last_name + " (" + str(self.id) + ") " + "part of batch: " + str(self.batch)
 
 class Exercise(BaseModel):
 	SUBJECTS = [('math', "Math"),

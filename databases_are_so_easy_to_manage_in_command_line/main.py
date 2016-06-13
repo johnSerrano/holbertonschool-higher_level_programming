@@ -254,8 +254,8 @@ def action_note_average_by_batch(*args, **kwargs):
 			for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
 				total += ex.note
 				count += 1
-			if count == 0:
-				count += 1
+		if count == 0:
+			continue;
 		print str(subject[1]) + ": " + str(total/float(count))
 
 def action_note_average_by_school(*args, **kwargs):
@@ -273,8 +273,8 @@ def action_note_average_by_school(*args, **kwargs):
 				for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
 					total += ex.note
 					count += 1
-				if count == 0:
-					count += 1
+		if count == 0:
+			continue;
 		print str(subject[1]) + ": " + str(total/float(count))
 
 def action_top_batch(*args, **kwargs):
@@ -297,7 +297,7 @@ def action_top_batch(*args, **kwargs):
 			if avg > best_score:
 				best = student
 				best_score = avg
-		print str(subject[1]) + ": " + str(best)
+		return (best_score, str(best))
 
 	if len(sys.argv) <= 2:
 		raise Exception("Too few arguments for `top_batch`")
@@ -307,10 +307,18 @@ def action_top_batch(*args, **kwargs):
 		return
 	if len(sys.argv) > 3:
 		subject = sys.argv[3]
-		get_top_batch_for_subject(subject, batch_id)
+		best = get_top_batch_for_subject(subject, batch_id)
+		if best:
+			print best[1]
 	else:
+		winners = []
 		for subject in Exercise.SUBJECTS:
-			get_top_batch_for_subject(subject, batch_id)
+			best = get_top_batch_for_subject(subject, batch_id)
+			if best:
+				winners.append(best)
+		best = max(winners, key=lambda x: x[0])
+		if best:
+			print best[1]
 
 def action_top_school(*args, **kwargs):
 	def get_top_school_for_subject(subject, school_id):
@@ -334,7 +342,7 @@ def action_top_school(*args, **kwargs):
 				if avg > best_score:
 					best = student
 					best_score = avg
-		print str(subject[1]) + ": " + str(best)
+		return (best_score, str(best))
 
 	if len(sys.argv) <= 2:
 		raise Exception("Too few arguments for `top_school`")
@@ -344,10 +352,18 @@ def action_top_school(*args, **kwargs):
 		return
 	if len(sys.argv) > 3:
 		subject = sys.argv[3]
-		get_top_school_for_subject(subject, school_id)
+		best = get_top_school_for_subject(subject, school_id)
+		if best:
+			print best[1]
 	else:
+		winners = []
 		for subject in Exercise.SUBJECTS:
-			get_top_school_for_subject(subject, school_id)
+			best = get_top_school_for_subject(subject, school_id)
+			if best:
+				winners.append(best)
+		best = max(winners, key=lambda x: x[0])
+		if best:
+			print best[1]
 
 if __name__ == '__main__':
 	actions = {
