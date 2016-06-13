@@ -31,3 +31,15 @@ class Student(User):
 	batch = pw.ForeignKeyField(Batch, related_name="students", on_delete="cascade")
 	def __str__(self):
 		return "" + self.first_name + " " + self.last_name + " " + str(self.id) + " " + "part of batch: " + str(self.batch)
+
+class Exercise(BaseModel):
+	SUBJECTS = [('math', "Math"),
+				('english', "English"),
+				('history', "History"),
+				('c_prog', "C prog"),
+				('swift_prog', "Swift prog")]
+	student = pw.ForeignKeyField(Student, related_name="exercises", on_delete="cascade")
+	subject = pw.FixedCharField(max_length=128)
+	note = pw.IntegerField(default = 0)
+	def __str__(self):
+		return "Exercise: " + str(self.student) + " has " + str(self.note) + " in " + str(self.subject) + " (" + str(self.id) + ")"

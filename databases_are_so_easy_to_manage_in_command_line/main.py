@@ -2,7 +2,7 @@ import sys
 from models import *
 
 def action_create(*args, **kwargs):
-	my_models_db.create_tables([School, Batch, User, Student])
+	my_models_db.create_tables([School, Batch, User, Student, Exercise])
 
 def action_print(*args, **kwargs):
 	if len(sys.argv) <= 2:
@@ -12,7 +12,8 @@ def action_print(*args, **kwargs):
 		"school": School,
 		"batch": Batch,
 		"student": Student,
-		"user": User
+		"user": User,
+		"exercise": Exercise,
 	}
 
 	if sys.argv[2] not in tables.keys():
@@ -43,6 +44,28 @@ def action_insert(*args, **kwargs):
 		batch.school = school
 		batch.save()
 		return
+
+	if sys.argv[2] == "exercise":
+		if len(sys.argv) < 6:
+			raise Exception("Too few arguments for `insert exercise`")
+		student_id = sys.argv[3]
+		subject = sys.argv[4]
+
+		res = False
+		for sub in Exercise.SUBJECTS:
+			if sub[0] == subject:
+				subject = sub[1]
+				res = True
+
+		if not res:
+			raise Exception("Invalid subject")
+
+		note = sys.argv[5]
+		ex = Exercise()
+		ex.student = student_id
+		ex.subject = subject
+		ex.note = note
+		ex.save()
 
 	if sys.argv[2] == "student":
 		#first_name is optional
@@ -86,6 +109,16 @@ def action_delete(*args, **kwargs):
 		if delete_q.execute() == 0:
 			print "Nothing to delete"
 		return
+
+	if sys.argv[2] == "exercise":
+		if len(sys.argv) <= 3:
+			raise Exception("No ID supplied")
+		todel = int(sys.argv[3])
+		for ex in Exercise.select().where(Exercise.id == todel):
+			print "DELETE: " + str(ex)
+		delete_q = Exercise.delete().where(Exercise.id == todel)
+		if delete_q.execute() == 0:
+			print "Nothing to delete"
 
 	if sys.argv[2] == "student":
 		if len(sys.argv) <= 3:
@@ -187,7 +220,134 @@ def action_print_all(*args, **kwargs):
 			print "\t" + str(batch)
 			for student in Student.select().where(Student.batch == batch):
 				print "\t\t" + str(student)
+				for ex in Exercise.select().where(Exercise.student == student):
+					print "\t\t\t" + str(ex)
 
+def action_note_average_by_student(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `note_average_by_student`")
+	student_id = sys.argv[2]
+	if not Student.select().where(Student.id == student_id):
+		print "Student not found"
+		return
+	for subject in Exercise.SUBJECTS:
+		total = 0
+		count = 0
+		for ex in Exercise.select().where(Exercise.student == student_id, Exercise.subject == subject[1]):
+			total += ex.note
+			count += 1
+		if count == 0:
+			count += 1
+		print str(subject[1]) + ": " + str(total/float(count))
+
+def action_note_average_by_batch(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `note_average_by_batch`")
+	batch_id = sys.argv[2]
+	if not Batch.select().where(Batch.id == batch_id):
+		print "Batch not found"
+		return
+	for subject in Exercise.SUBJECTS:
+		total = 0
+		count = 0
+		for student in Student.select().where(Student.batch == batch_id):
+			for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
+				total += ex.note
+				count += 1
+			if count == 0:
+				count += 1
+		print str(subject[1]) + ": " + str(total/float(count))
+
+def action_note_average_by_school(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `note_average_by_school`")
+	school_id = sys.argv[2]
+	if not School.select().where(School.id == school_id):
+		print "School not found"
+		return
+	for subject in Exercise.SUBJECTS:
+		total = 0
+		count = 0
+		for batch in Batch.select().where(Batch.school == school_id):
+			for student in Student.select().where(Student.batch == batch):
+				for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
+					total += ex.note
+					count += 1
+				if count == 0:
+					count += 1
+		print str(subject[1]) + ": " + str(total/float(count))
+
+def action_top_batch(*args, **kwargs):
+	def get_top_batch_for_subject(subject, batch_id):
+		best = None
+		best_score = -1
+		students = Student.select().where(Student.batch == batch_id)
+		if not students:
+			print "No students in batch"
+			return
+		for student in students:
+			total = 0
+			count = 0
+			for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
+				total += ex.note
+				count += 1
+			if count == 0:
+				count += 1
+			avg = total/float(count)
+			if avg > best_score:
+				best = student
+				best_score = avg
+		print str(subject[1]) + ": " + str(best)
+
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `top_batch`")
+	batch_id = sys.argv[2]
+	if not Batch.select().where(Batch.id == batch_id):
+		print "Batch not found"
+		return
+	if len(sys.argv) > 3:
+		subject = sys.argv[3]
+		get_top_batch_for_subject(subject, batch_id)
+	else:
+		for subject in Exercise.SUBJECTS:
+			get_top_batch_for_subject(subject, batch_id)
+
+def action_top_school(*args, **kwargs):
+	def get_top_school_for_subject(subject, school_id):
+		best = None
+		best_score = -1
+		batches = Batch.select().where(Batch.school == school_id)
+		if not batches:
+			print "No batches in school"
+			return
+		for batch in batches:
+			students = Student.select().where(Student.batch == batch)
+			for student in students:
+				total = 0
+				count = 0
+				for ex in Exercise.select().where(Exercise.student == student, Exercise.subject == subject[1]):
+					total += ex.note
+					count += 1
+				if count == 0:
+					count += 1
+				avg = total/float(count)
+				if avg > best_score:
+					best = student
+					best_score = avg
+		print str(subject[1]) + ": " + str(best)
+
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `top_school`")
+	school_id = sys.argv[2]
+	if not School.select().where(School.id == school_id):
+		print "School not found"
+		return
+	if len(sys.argv) > 3:
+		subject = sys.argv[3]
+		get_top_school_for_subject(subject, school_id)
+	else:
+		for subject in Exercise.SUBJECTS:
+			get_top_school_for_subject(subject, school_id)
 
 if __name__ == '__main__':
 	actions = {
@@ -202,6 +362,11 @@ if __name__ == '__main__':
 		"age_average": action_age_average,
 		"change_batch": action_change_batch,
 		"print_all": action_print_all,
+		"note_average_by_student": action_note_average_by_student,
+		"note_average_by_batch": action_note_average_by_batch,
+		"note_average_by_school": action_note_average_by_school,
+		"top_batch": action_top_batch,
+		"top_school": action_top_school,
 	}
 	if len(sys.argv) > 1:
 		action = sys.argv[1]
