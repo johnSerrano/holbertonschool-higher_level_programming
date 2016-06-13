@@ -1,14 +1,24 @@
 import sys
 from models import *
 
-
 def action_create(*args, **kwargs):
 	my_models_db.create_tables([School, Batch, User, Student])
 
-
 def action_print(*args, **kwargs):
-	print "print"
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `print`")
 
+	tables = {
+		"school": School,
+		"batch": Batch,
+		"student": Student,
+		"user": User
+	}
+
+	if sys.argv[2] not in tables.keys():
+		return
+	for item in tables[sys.argv[2]].select():
+		print item
 
 def action_insert(*args, **kwargs):
 	if len(sys.argv) <= 2:
@@ -50,13 +60,134 @@ def action_insert(*args, **kwargs):
 		if "first_name" in locals():
 			student.first_name = first_name
 		student.save()
-		return
 
 def action_delete(*args, **kwargs):
-	print "delete"
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `delete`")
 
-def action_schema(*args, **kwargs):
-	print "schema"
+	if sys.argv[2] == "school":
+		if len(sys.argv) <= 3:
+			raise Exception("No ID supplied")
+		todel = int(sys.argv[3])
+		for school in School.select().where(School.id == todel):
+			print "DELETE: " + str(school)
+		delete_q = School.delete().where(School.id == todel)
+		if delete_q.execute() == 0:
+			print "Nothing to delete"
+		return
+
+	if sys.argv[2] == "batch":
+		if len(sys.argv) <= 3:
+			raise Exception("No ID supplied")
+		todel = int(sys.argv[3])
+		for batch in Batch.select().where(Batch.id == todel):
+			print "DELETE: " + str(batch)
+		delete_q = Batch.delete().where(Batch.id == todel)
+		if delete_q.execute() == 0:
+			print "Nothing to delete"
+		return
+
+	if sys.argv[2] == "student":
+		if len(sys.argv) <= 3:
+			raise Exception("No ID supplied")
+		todel = int(sys.argv[3])
+		for student in Student.select().where(Student.id == todel):
+			print "DELETE: " + str(student)
+		delete_q = Student.delete().where(Student.id == todel)
+		if delete_q.execute() == 0:
+			print "Nothing to delete"
+
+def action_print_batch_by_school(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `print_batch_by_school`")
+
+	schoolid = int(sys.argv[2])
+	#make sure school exists
+	if not School.select().where(School.id == schoolid):
+		print "School not found"
+		return
+
+	#print all batches associated with school
+	for item in Batch.select().where(Batch.school == schoolid):
+		print item
+
+def action_print_student_by_batch(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `print_student_by_batch`")
+
+	batchid = int(sys.argv[2])
+	if not Batch.select().where(Batch.id == batchid):
+		print "Batch not found"
+		return
+
+	for item in Student.select().where(Student.batch == batchid):
+		print item
+
+def action_print_student_by_school(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `print_student_by_school`")
+
+	schoolid = int(sys.argv[2])
+	if not School.select().where(School.id == schoolid):
+		print "School not found"
+		return
+
+	for batch in Batch.select().where(Batch.school == schoolid):
+		for student in Student.select().where(Student.batch == batch):
+			print student
+
+def action_print_family(*args, **kwargs):
+	if len(sys.argv) <= 2:
+		raise Exception("Too few arguments for `print_family`")
+
+	family_name = sys.argv[2]
+
+	for student in Student.select().where(Student.last_name == family_name):
+		print student
+
+def action_age_average(*args, **kwargs):
+	total = 0
+	count = 0
+	batch_id = None
+ 	if len(sys.argv) > 2:
+		batch_id == int(sys.argv[2])
+	if batch_id:
+		for student in Student.select().where(Student.batch == batch_id):
+			total += student.age
+			count += 1
+		print int(total/count)
+		return
+	for student in Student.select():
+		total += student.age
+		count += 1
+	print int(total/count)
+
+def action_change_batch(*args, **kwargs):
+	if len(sys.argv) <= 3:
+		raise Exception("Too few arguments for `change_batch`")
+	student_id = int(sys.argv[2])
+	batch_id = int(sys.argv[3])
+	students = Student.select().where(Student.id == student_id)
+	batches = Batch.select().where(Batch.id == batch_id)
+	if not students:
+		print "Student not found"
+	elif not batches:
+		print "Batch not found"
+	elif students[0].batch == batches[0]:
+		print str(students[0]) + " already in " + str(batches[0])
+	else:
+		students[0].batch = batches[0].id
+		students[0].save()
+		print str(students[0]) + " has been move to " + str(batches[0])
+
+def action_print_all(*args, **kwargs):
+	for school in School.select():
+		print school
+		for batch in Batch.select().where(Batch.school == school):
+			print "\t" + str(batch)
+			for student in Student.select().where(Student.batch == batch):
+				print "\t\t" + str(student)
+
 
 if __name__ == '__main__':
 	actions = {
@@ -64,7 +195,13 @@ if __name__ == '__main__':
 		"print": action_print,
 		"insert": action_insert,
 		"delete": action_delete,
-		"schema": action_schema,
+		"print_batch_by_school": action_print_batch_by_school,
+		"print_student_by_batch": action_print_student_by_batch,
+		"print_student_by_school": action_print_student_by_school,
+		"print_family": action_print_family,
+		"age_average": action_age_average,
+		"change_batch": action_change_batch,
+		"print_all": action_print_all,
 	}
 	if len(sys.argv) > 1:
 		action = sys.argv[1]
