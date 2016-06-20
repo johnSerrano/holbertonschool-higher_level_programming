@@ -15,11 +15,7 @@ get_shows_query = """
 
 get_seasons_query = "SELECT Season.id, Season.number FROM Season WHERE Season.tvshow_id = "
 
-
-
-shows = []
 curse.execute(get_shows_query);
-
 fetched = curse.fetchall()
 for show in fetched:
 	curse.execute(get_seasons_query + str(show[1]))
